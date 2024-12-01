@@ -1,11 +1,16 @@
-export default function DashboardPage() {
+// /app/dashboard/page.tsx
+import { FC } from 'react';
+
+const DashboardPage: FC = () => {
   return (
-    <div className="max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold">Your Financial Dashboard</h2>
+    <div className="max-w-6xl mx-auto p-4">
+      <h1 className="text-3xl font-bold">Financial Dashboard</h1>
       <div className="mt-4">
-        <p>Track your financial progress here.</p>
-        {/* Add charts, tokens, financial stats here */}
+        {/* Add charts or financial data components here */}
+        <p>Your financial data and performance metrics will appear here.</p>
       </div>
     </div>
   );
-}
+};
+
+export default DashboardPage;

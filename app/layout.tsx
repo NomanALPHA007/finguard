@@ -1,22 +1,32 @@
-import React from "react";
-import "./globals.css"; // Import global styles here
+import "./globals.css";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export const metadata = {
+  title: "FinGuard",
+  description: "Your personal finance management tool",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className="bg-gray-50">
-        <header className="bg-blue-600 text-white p-4">
-          <h1 className="text-3xl font-bold">FinGuard - Financial Learning</h1>
+      <head>
+        {/* Additional <head> content (e.g., meta tags, title) can go here */}
+      </head>
+      <body>
+        <header className="bg-gray-900 text-white p-4">
           <nav>
             <ul className="flex space-x-4">
               <li>
                 <a href="/">Home</a>
               </li>
               <li>
-                <a href="/dashboard">Dashboard</a>
+                <a href="/learn">Learn</a>
               </li>
               <li>
-                <a href="/learn">Learn</a>
+                <a href="/dashboard">Dashboard</a>
               </li>
               <li>
                 <a href="/profile">Profile</a>
@@ -24,7 +34,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </ul>
           </nav>
         </header>
-        <main className="p-6">{children}</main>
+        <main>{children}</main>
+        <footer className="bg-gray-900 text-white p-4 text-center">
+          <p>&copy; 2024 FinGuard</p>
+        </footer>
       </body>
     </html>
   );
