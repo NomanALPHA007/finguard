@@ -1,3 +1,4 @@
+// D:/Lets Do It/fin-guard/finguard/app/learn/page.tsx
 import { FC } from "react";
 import Link from "next/link";
 
@@ -22,6 +23,7 @@ const Learn: FC = () => {
           Featured Content
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+          {/* Add your featured content blocks here */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-medium text-gray-700">
               How to Create a Budget
