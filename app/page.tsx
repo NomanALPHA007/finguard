@@ -15,7 +15,7 @@ const HomePage: FC = () => {
 
         {/* Description */}
         <p className="text-lg text-gray-600 mb-8 max-w-xl mx-auto font-body">
-          FinGuard transforms financial & legal education and guidance into a
+          FinGuard transforms legal & financial education and guidance into a
           dynamic, accessible, and rewarding experience. Powered by AI and
           blockchain, we help you navigate law, finance, and wealth management.
         </p>
