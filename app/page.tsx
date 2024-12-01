@@ -1,5 +1,6 @@
 // /app/page.tsx
 import { FC } from "react";
+import ChatbotClient from "@/components/ChatbotClient"; // Adjust the import path
 
 const HomePage: FC = () => {
   return (
@@ -8,6 +9,7 @@ const HomePage: FC = () => {
       <p className="text-xl mb-4">
         Your personal financial assistant powered by blockchain and AI.
       </p>
+
       <div className="space-x-4">
         <a href="/learn" className="text-lg text-blue-500">
           Start Learning
@@ -16,6 +18,9 @@ const HomePage: FC = () => {
           View Dashboard
         </a>
       </div>
+
+      {/* Render Chatbot */}
+      <ChatbotClient />
     </div>
   );
 };

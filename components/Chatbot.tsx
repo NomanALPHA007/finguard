@@ -1,84 +1,129 @@
-import { FC } from "react";
-import Chatbot from "@/components/Chatbot"; // Import the Chatbot component
+// /components/Chatbot.tsx
+"use client";
 
-const HomePage: FC = () => {
+import { useState } from "react";
+
+const Chatbot = () => {
+  const [messages, setMessages] = useState<{ user: string; bot: string }[]>([]);
+  const [userInput, setUserInput] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!userInput.trim()) return;
+
+    // Add user message to the chat
+    setMessages((prev) => [...prev, { user: userInput, bot: "..." }]);
+    setLoading(true);
+    setUserInput(""); // Clear input field
+
+    try {
+      // Send message to the backend API to get the bot's response
+      const res = await fetch("/api/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userMessage: userInput }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to fetch: ${res.status} - ${res.statusText}`);
+      }
+
+      const data = await res.json();
+      const botMessage = data.message || "Sorry, I couldn’t understand that.";
+
+      // Update the conversation with the bot's reply
+      setMessages((prev) => [...prev, { user: userInput, bot: botMessage }]);
+    } catch (error) {
+      console.error("Error fetching response:", error);
+      setMessages((prev) => [
+        ...prev,
+        { user: userInput, bot: "Error fetching response. Please try again." },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="bg-white min-h-screen flex flex-col justify-between text-black font-sans">
-      <div className="max-w-6xl mx-auto p-8 text-center space-y-8">
-        {/* Header Section */}
-        <div>
-          <h1 className="text-5xl font-extrabold text-black mb-4">
-            Welcome to FinGuard
-          </h1>
-          <p className="text-lg text-gray-700 font-light mb-8">
-            Empowering you with financial literacy through gamified,
-            blockchain-enabled, and AI-driven education.
-          </p>
-        </div>
-
-        {/* Vision Statement */}
-        <div className="bg-white text-black p-8 rounded-xl shadow-lg">
-          <h2 className="text-3xl font-semibold text-green-600 mb-4">
-            Our Vision
-          </h2>
-          <p className="text-lg text-gray-800">
-            FinGuard transforms financial education into a dynamic, accessible,
-            and rewarding experience. We leverage blockchain, AI, and community
-            collaboration to simplify financial concepts and make them relevant
-            for everyone.
-          </p>
-        </div>
-
-        {/* Key Features Section */}
-        <div className="space-y-6">
-          <h2 className="text-3xl font-semibold text-green-600 mb-4">
-            What Makes Us Special?
-          </h2>
-          <div className="flex justify-center space-x-8">
-            <div className="bg-white p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-semibold text-green-600 mb-2">
-                Holistic Financial Education
-              </h3>
-              <p className="text-gray-700">
-                We cover budgeting, investing, taxes, and more to give you a
-                complete financial education.
+    <div className="chatbot-container">
+      <div className="chatbox">
+        <div className="messages">
+          {messages.map((msg, index) => (
+            <div key={index}>
+              <p>
+                <strong>You:</strong> {msg.user}
+              </p>
+              <p>
+                <strong>Bot:</strong> {msg.bot}
               </p>
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-semibold text-green-600 mb-2">
-                AI-Driven Guidance
-              </h3>
-              <p className="text-gray-700">
-                Personalized financial plans tailored to your unique situation
-                and goals.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Call to Action Section */}
-        <div className="flex justify-center space-x-8 mt-8">
-          <a
-            href="/learn"
-            className="bg-green-600 text-white text-lg py-3 px-6 rounded-full shadow-md hover:bg-green-700 transition-all"
-          >
-            Start Learning
-          </a>
-          <a
-            href="/dashboard"
-            className="bg-black text-white text-lg py-3 px-6 rounded-full shadow-md hover:bg-gray-900 transition-all"
-          >
-            View Dashboard
-          </a>
-        </div>
+        <form onSubmit={handleSubmit} className="input-form">
+          <input
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder="Ask about law, legal or finance..."
+            className="input"
+            required
+          />
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? "Processing..." : "Send"}
+          </button>
+        </form>
       </div>
 
-      {/* Chatbot Section */}
-      <div className="fixed bottom-4 right-4">
-        <Chatbot />
-      </div>
+      <style jsx>{`
+        .chatbot-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 2rem;
+        }
+        .chatbox {
+          width: 100%;
+          max-width: 600px;
+          padding: 1rem;
+          background-color: #f4f4f4;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .messages {
+          margin-bottom: 1rem;
+          max-height: 400px;
+          overflow-y: scroll;
+        }
+        .input-form {
+          display: flex;
+        }
+        .input {
+          width: 80%;
+          padding: 0.5rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          margin-right: 0.5rem;
+        }
+        .submit-btn {
+          padding: 0.5rem 1rem;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .submit-btn:hover {
+          background-color: #0056b3;
+        }
+        .submit-btn:disabled {
+          background-color: #cccccc;
+          cursor: not-allowed;
+        }
+      `}</style>
     </div>
   );
 };
 
-export default HomePage;
+export default Chatbot;
