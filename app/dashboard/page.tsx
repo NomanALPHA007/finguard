@@ -66,7 +66,7 @@ const Dashboard: FC = () => {
         </h3>
         <ul className="mt-4">
           <li className="text-orange-600">
-            Low Balance Alert: $100 remaining in your account!
+            Low Balance Alert: $10500.00 remaining in your account!
           </li>
         </ul>
       </section>
